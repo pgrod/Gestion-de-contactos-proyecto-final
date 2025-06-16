@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Campo from "./Campo";
 import EliminarContacto from "../eliminar/EliminarContacto";
-
+import { alertaWarning } from "../utils/alertas";
 const Contacto = () => {
   const [contactos, setContactos] = useState([]);
   const [busqueda, setBusqueda] = useState("");
@@ -17,7 +17,7 @@ const Contacto = () => {
 
   const handleGuardar = () => {
     if (!form.nombre || !form.apellido || !form.telefono || !form.correo) {
-      alert("Todos los campos son obligatorios");
+      alertaWarning("Todos los campos son obligatorios");
       return;
     }
 
