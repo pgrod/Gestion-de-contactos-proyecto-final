@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Campo from "./Campo";
 import EliminarContacto from "../eliminar/EliminarContacto";
 import { alertaWarning } from "../utils/alertas";
+
 const Contacto = () => {
   const [contactos, setContactos] = useState([]);
   const [busqueda, setBusqueda] = useState("");
@@ -23,10 +24,10 @@ const Contacto = () => {
 
     const nuevos = [...contactos];
     if (editIndex !== null) {
-      nuevos[editIndex] = form;
+      nuevos[editIndex] = { ...form, favorito: contactos[editIndex].favorito || false };
       setEditIndex(null);
     } else {
-      nuevos.push(form);
+      nuevos.push({ ...form, favorito: false });
     }
 
     setContactos(nuevos);
@@ -41,13 +42,27 @@ const Contacto = () => {
     document.getElementById("btnAbrirModal").click();
   };
 
+  const toggleFavorito = (i) => {
+    const nuevos = [...contactos];
+    nuevos[i].favorito = !nuevos[i].favorito;
+    setContactos(nuevos);
+    guardarEnStorage(nuevos);
+  };
+
   const handleBuscar = (e) => setBusqueda(e.target.value.toLowerCase());
 
-  const filtrados = contactos.filter(
-    (c) =>
-      c.nombre.toLowerCase().includes(busqueda) ||
-      c.correo.toLowerCase().includes(busqueda)
-  );
+  const filtrados = contactos
+    .filter(
+      (c) =>
+        c.nombre.toLowerCase().includes(busqueda) ||
+        c.correo.toLowerCase().includes(busqueda)
+    )
+    .sort((a, b) => {
+      if (a.favorito === b.favorito) {
+        return a.nombre.localeCompare(b.nombre);
+      }
+      return b.favorito - a.favorito;
+    });
 
   return (
     <div className="container mt-4">
@@ -83,6 +98,9 @@ const Contacto = () => {
                   <td>{c.telefono}</td>
                   <td>{c.correo}</td>
                   <td>
+                    <button className={`btn btn-sm me-2 ${c.favorito ? 'btn-warning' : 'btn-outline-warning'}`} onClick={() => toggleFavorito(i)}>
+                      <i className={`fa${c.favorito ? 's' : 'r'} fa-star`} />
+                    </button>
                     <button className="btn btn-warning btn-sm me-2" onClick={() => handleEditar(i)}>
                       <i className="fa-solid fa-pen-to-square" />
                     </button>
@@ -125,4 +143,3 @@ const Contacto = () => {
 };
 
 export default Contacto;
-

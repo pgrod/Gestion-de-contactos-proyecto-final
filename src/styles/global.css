@@ -1,33 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
+
 body {
-  background-color: #f8f9fa;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f8f9fa;
+  color: #212529;
+  font-family: 'Merriweather', serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
-  color: #343a40;
+  font-size: 2.2rem;
+  color: #0d3b66;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #0d3b66;
+  padding-bottom: 0.5rem;
 }
 
-.table th,
-.table td {
-  vertical-align: middle;
+.table {
+  background: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  color: #212529;
+  font-size: 0.95rem;
+  overflow: hidden;
+}
+
+.table th {
+  background-color: #0d3b66;
+  color: #ffffff;
   text-align: center;
+  vertical-align: middle;
+}
+
+.table td {
+  background-color: #f1f3f5;
+  vertical-align: middle;
+  padding: 0.75rem;
+}
+
+.table tr:hover td {
+  background-color: #e2e6ea;
+}
+
+.btn {
+  border-radius: 0.5rem;
+  font-weight: bold;
+  font-size: 0.9rem;
 }
 
 .btn-primary {
-  background-color: #0d6efd;
+  background-color: #0d3b66;
   border: none;
+  color: #ffffff;
 }
 
-.btn-success {
-  background-color: #198754;
+.btn-primary:hover {
+  background-color: #09406f;
+}
+
+.btn-warning {
+  background-color: #faa307;
+  border: none;
+  color: #212529;
+}
+
+.btn-warning:hover {
+  background-color: #e09b00;
 }
 
 .btn-danger {
   background-color: #dc3545;
+  border: none;
+  color: #ffffff;
+}
+
+.btn-danger:hover {
+  background-color: #bb2d3b;
 }
 
 .input-group-text {
-  background-color: #e9ecef;
-  border-right: none;
+  background-color: #dee2e6;
+  color: #212529;
+  border: 1px solid #ced4da;
 }
 
+.form-control {
+  background-color: #ffffff;
+  color: #212529;
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+}
+
+.form-control:focus {
+  border-color: #0d3b66;
+  box-shadow: 0 0 0 0.2rem rgba(13, 59, 102, 0.25);
+}
+
+.modal-content {
+  background-color: #ffffff;
+  color: #212529;
+  border-radius: 0.5rem;
+}
+
+.modal-header {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+  border-top: 1px solid #dee2e6;
+}
+
+input::placeholder {
+  color: #6c757d;
+}
