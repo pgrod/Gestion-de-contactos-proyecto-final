@@ -48,6 +48,13 @@ const Contacto = () => {
     setContactos(nuevos);
     guardarEnStorage(nuevos);
   };
+  
+  const handleEliminar = () => {
+   const nuevos = contactos.filter(ct => ct.correo !== contacto.correo);
+   setContactos(nuevos);
+   localStorage.setItem("contactos", JSON.stringify(nuevos));
+  };
+
 
   const handleBuscar = (e) => setBusqueda(e.target.value.toLowerCase());
 
@@ -104,7 +111,7 @@ const Contacto = () => {
                     <button className="btn btn-warning btn-sm me-2" onClick={() => handleEditar(i)}>
                       <i className="fa-solid fa-pen-to-square" />
                     </button>
-                    <EliminarContacto index={i} contactos={contactos} setContactos={setContactos} />
+                    <EliminarContacto contacto={c} contactos={contactos} setContactos={setContactos} />
                   </td>
                 </tr>
               ))
