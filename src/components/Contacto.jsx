@@ -22,39 +22,44 @@ const Contacto = () => {
       return;
     }
 
-    const nuevos = [...contactos];
-    if (editIndex !== null) {
-      nuevos[editIndex] = { ...form, favorito: contactos[editIndex].favorito || false };
-      setEditIndex(null);
-    } else {
-      nuevos.push({ ...form, favorito: false });
+    if (editIndex === null && contactos.some(c => c.correo === form.correo)) {
+      alertaWarning("Ya existe un contacto con este correo");
+      return;
     }
 
-    setContactos(nuevos);
-    guardarEnStorage(nuevos);
+    if (editIndex !== null) {
+      const nuevos = contactos.map(c =>
+        c.correo === form.correo ? { ...form, favorito: c.favorito || false } : c
+      );
+      setContactos(nuevos);
+      guardarEnStorage(nuevos);
+      setEditIndex(null);
+    } else {
+      const nuevos = [...contactos, { ...form, favorito: false }];
+      setContactos(nuevos);
+      guardarEnStorage(nuevos);
+    }
+
     setForm({ nombre: "", apellido: "", telefono: "", correo: "" });
     document.getElementById("btnCerrarModal").click();
   };
 
-  const handleEditar = (i) => {
-    setForm(contactos[i]);
-    setEditIndex(i);
-    document.getElementById("btnAbrirModal").click();
+  const handleEditar = (correo) => {
+    const contacto = contactos.find(c => c.correo === correo);
+    if (contacto) {
+      setForm(contacto);
+      setEditIndex(contactos.findIndex(c => c.correo === correo));
+      document.getElementById("btnAbrirModal").click();
+    }
   };
 
-  const toggleFavorito = (i) => {
-    const nuevos = [...contactos];
-    nuevos[i].favorito = !nuevos[i].favorito;
+  const toggleFavorito = (correo) => {
+    const nuevos = contactos.map(c =>
+      c.correo === correo ? { ...c, favorito: !c.favorito } : c
+    );
     setContactos(nuevos);
     guardarEnStorage(nuevos);
   };
-  
-  const handleEliminar = () => {
-   const nuevos = contactos.filter(ct => ct.correo !== contacto.correo);
-   setContactos(nuevos);
-   localStorage.setItem("contactos", JSON.stringify(nuevos));
-  };
-
 
   const handleBuscar = (e) => setBusqueda(e.target.value.toLowerCase());
 
@@ -98,17 +103,20 @@ const Contacto = () => {
           <tbody>
             {filtrados.length > 0 ? (
               filtrados.map((c, i) => (
-                <tr key={i}>
+                <tr key={c.correo}>
                   <td>{i + 1}</td>
                   <td>{c.nombre}</td>
                   <td>{c.apellido}</td>
                   <td>{c.telefono}</td>
                   <td>{c.correo}</td>
                   <td>
-                    <button className={`btn btn-sm me-2 ${c.favorito ? 'btn-warning' : 'btn-outline-warning'}`} onClick={() => toggleFavorito(i)}>
+                    <button
+                      className={`btn btn-sm me-2 ${c.favorito ? 'btn-warning' : 'btn-outline-warning'}`}
+                      onClick={() => toggleFavorito(c.correo)}
+                    >
                       <i className={`fa${c.favorito ? 's' : 'r'} fa-star`} />
                     </button>
-                    <button className="btn btn-warning btn-sm me-2" onClick={() => handleEditar(i)}>
+                    <button className="btn btn-warning btn-sm me-2" onClick={() => handleEditar(c.correo)}>
                       <i className="fa-solid fa-pen-to-square" />
                     </button>
                     <EliminarContacto contacto={c} contactos={contactos} setContactos={setContactos} />
