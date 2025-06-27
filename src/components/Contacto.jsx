@@ -8,6 +8,7 @@ const Contacto = () => {
   const [busqueda, setBusqueda] = useState("");
   const [form, setForm] = useState({ nombre: "", apellido: "", telefono: "", correo: "" });
   const [editIndex, setEditIndex] = useState(null);
+  const [correoOriginal, setCorreoOriginal] = useState("");
 
   useEffect(() => {
     const guardados = JSON.parse(localStorage.getItem("contactos")) || [];
@@ -29,11 +30,12 @@ const Contacto = () => {
 
     if (editIndex !== null) {
       const nuevos = contactos.map(c =>
-        c.correo === form.correo ? { ...form, favorito: c.favorito || false } : c
+        c.correo === correoOriginal ? { ...form, favorito: c.favorito || false } : c
       );
       setContactos(nuevos);
       guardarEnStorage(nuevos);
       setEditIndex(null);
+      setCorreoOriginal("");
     } else {
       const nuevos = [...contactos, { ...form, favorito: false }];
       setContactos(nuevos);
@@ -49,6 +51,7 @@ const Contacto = () => {
     if (contacto) {
       setForm(contacto);
       setEditIndex(contactos.findIndex(c => c.correo === correo));
+      setCorreoOriginal(correo);
       document.getElementById("btnAbrirModal").click();
     }
   };
